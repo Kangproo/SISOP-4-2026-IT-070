@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  libraryit-server:
+    build: .
+    container_name: libraryit-server
+    ports:
+      - "1445:445"
+    volumes:
+      - ./data:/libraryit
+      - ./logs:/logs
+    command: ["server"]
+    restart: unless-stopped
+
+  libraryit-logger:
+    build: .
+    container_name: libraryit-logger
+    depends_on:
+      - libraryit-server
+    volumes:
+      - ./data:/libraryit
+      - ./logs:/logs
+    command: ["logger"]
+    restart: unless-stopped
